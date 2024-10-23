@@ -1,2 +1,2 @@
-web: uvicorn app:app --host 0.0.0.0 --port 10000
+web: gunicorn -w 4 app:app --bind 0.0.0.0:8000
 
