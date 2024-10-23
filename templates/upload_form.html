@@ -1,58 +1,43 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>画像アップロードとプレビュー</title>
+    <title>Image Preview</title>
 </head>
 <body>
-    <h1>画像アップロード</h1>
-    <form action="/" method="POST" enctype="multipart/form-data">
-        <label for="product_name">商品名:</label>
-        <input type="text" id="product_name" name="product_name"><br><br>
-
-        <label for="image">画像をアップロード:</label>
-        <input type="file" id="image" name="image"><br><br>
-
-        <label for="logo">ロゴをアップロード（任意）:</label>
-        <input type="file" id="logo" name="logo"><br><br>
-
-        <label for="text1">左下のテキスト:</label>
-        <input type="text" id="text1" name="text1"><br><br>
-
-        <label for="text2">中央下のテキスト:</label>
-        <input type="text" id="text2" name="text2"><br><br>
-
-        <label for="text3">右下の上部テキスト:</label>
-        <input type="text" id="text3" name="text3"><br><br>
-
-        <label for="text4">右下の下部テキスト:</label>
-        <input type="text" id="text4" name="text4"><br><br>
-
-        <input type="submit" value="アップロード">
+    <h1>画像生成</h1>
+    <form method="post" enctype="multipart/form-data">
+        <label>商品名:</label><br>
+        <input type="text" name="product_name" required><br><br>
+        <label>画像をアップロード:</label><br>
+        <input type="file" name="image" required><br><br>
+        <label>ロゴ（任意）:</label><br>
+        <input type="file" name="logo"><br><br>
+        <label>左下のテキスト:</label><br>
+        <input type="text" name="text1"><br><br>
+        <label>中央下のテキスト:</label><br>
+        <input type="text" name="text2"><br><br>
+        <label>右下上部のテキスト:</label><br>
+        <input type="text" name="text3"><br><br>
+        <label>右下下部のテキスト:</label><br>
+        <input type="text" name="text4"><br><br>
+        <button type="submit">画像生成</button>
     </form>
-
+    <br>
     <form action="/download_all" method="GET">
         <input type="submit" value="全画像をZIPで一括ダウンロード">
     </form>
 
-    <h2>生成されたプレビュー画像</h2>
+    <h2>生成された画像プレビュー</h2>
     {% if generated_images %}
-        <ul>
-        {% for image_data in generated_images|reverse %}  <!-- 最新の画像を一番上に表示 -->
-            <li>
-                <h3>商品名: {{ image_data.product_name }}</h3>
-                <p>プレビュー1 (800x450)</p>
-                <img src="data:image/jpeg;base64,{{ image_data.img_base64_1 }}" alt="プレビュー1">
-                <p>プレビュー2 (495x495)</p>
-                <img src="data:image/jpeg;base64,{{ image_data.img_base64_2 }}" alt="プレビュー2">
-            </li>
+        {% for image in generated_images %}
+            <h3>{{ image.product_name }}</h3>
+            <img src="data:image/jpeg;base64,{{ image.img_base64_1 }}" alt="800x450 プレビュー" style="width:400px;"><br>
+            <img src="data:image/jpeg;base64,{{ image.img_base64_2 }}" alt="495x495 プレビュー" style="width:200px;"><br>
         {% endfor %}
-        </ul>
     {% else %}
-        <p>生成された画像はまだありません。</p>
+        <p>まだ画像が生成されていません。</p>
     {% endif %}
-
-    
 </body>
 </html>
