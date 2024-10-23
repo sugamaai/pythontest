@@ -16,6 +16,7 @@ pylint==3.3.1
 tomli==2.0.2
 tomlkit==0.13.2
 typing_extensions==4.12.2
+flask==2.0.3
 fastapi
 uvicorn
 
