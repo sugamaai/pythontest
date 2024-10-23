@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/ast24-08-0001/python/myenv"
+VIRTUAL_ENV="/Users/ast24-08-0001/GITHUB/sugamaai/pythontest/myenv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
