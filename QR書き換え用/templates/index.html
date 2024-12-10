@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>QRコード挿入</title>
+        <style>
+            .preview img {
+                width: 300px;
+                margin: 10px;
+                border: 1px solid #ccc;
+                box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+            }
+        </style>
+    </head>
+    <body>
+        <h1>QRコード挿入</h1>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <label for="base_image">Base Image:</label>
+            <input type="file" name="base_image" id="base_image" required><br><br>
+            <label for="qr_images">QR Images (Max 20):</label>
+            <input type="file" name="qr_images" id="qr_images" multiple required><br><br>
+            <button type="submit">Upload and Process</button>
+        </form>
+        <h2>プレビュー:</h2>
+        <div class="preview" id="preview"></div>
+        <button id="downloadZip" style="display: none;">ZIPとして保存</button>
+
+        <script>
+            const form = document.getElementById('uploadForm');
+            const previewDiv = document.getElementById('preview');
+            const downloadZipButton = document.getElementById('downloadZip');
+
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                const formData = new FormData(form);
+                
+                // APIリクエストを送信
+                const response = await fetch('/process', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                // レスポンスからプレビュー画像を取得
+                if (response.ok) {
+                    const data = await response.json();
+                    previewDiv.innerHTML = ""; // プレビューをリセット
+                    const img = document.createElement('img');
+                    img.src = data.preview;
+                    previewDiv.appendChild(img);
+
+                    // ZIPダウンロードボタンを表示
+                    downloadZipButton.style.display = 'block';
+                    downloadZipButton.onclick = () => {
+                        window.location.href = '/download';
+                    };
+                } else {
+                    alert("エラーが発生しました。");
+                }
+            });
+        </script>
+    </body>
+    </html>
